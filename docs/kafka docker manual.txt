@@ -1,0 +1,8 @@
+to see topics enter 
+root@0cd309adb7e5:/opt/kafka_2.13-2.8.1/bin/kafka-topics.sh --list --zookeeper zookeeper:2181
+
+to start kafka producer 
+root@62e16fe138fa:/# /opt/kafka_2.13-2.8.1/bin/kafka-console-producer.sh --topic mytopic --bootstrap-server localhost:9092
+
+to see topic's messages
+/opt/kafka_2.13-2.8.1/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mytopic --from-beginning

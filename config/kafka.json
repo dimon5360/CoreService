@@ -1,0 +1,6 @@
+{
+    "host": "localhost",
+    "producerTopic": "todataprocessortopic",
+    "consumerTopic": "fromdataprocessortopic",
+    "group.id": "mygroup"
+}
