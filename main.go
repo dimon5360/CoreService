@@ -5,9 +5,9 @@ import (
 	"log"
 )
 
-// build from 01.08.2022
+// build v.0.0.2 from 15.08.2022
 const (
-	BUILD = 1
+	BUILD = 2
 	MINOR = 0
 	MAJOR = 0
 )
