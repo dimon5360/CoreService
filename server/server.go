@@ -1,4 +1,4 @@
-package router
+package server
 
 import (
 	"app/main/postgres"
@@ -24,32 +24,38 @@ type appConfig struct {
 	dataService postgres.BarMapServiceClient
 }
 
+type Body struct {
+	Title       string
+	Address     string
+	Description string
+}
+
 func SetupRouting(router *gin.Engine, app *appConfig) {
 
 	router.POST("/createbar", app.CreateBar)
 }
 
-// curl -i -X POST -H 'Content-Type: application/json'
-// -d '{"id": "1234", "title": "Goodson", "address": "Zelenograd",
-// "description": "bar"}' http://localhost:40400/createbar
-
 func (app *appConfig) CreateBar(c *gin.Context) {
 
-	log.Println("Create bar called")
+	type Body struct {
+		Title       string
+		Address     string
+		Description string
+	}
+
+	body := Body{}
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	id := c.Query("id")
-	title := c.DefaultQuery("title", "Unknown")
-	address := c.PostForm("address")
-	description := c.PostForm("description")
-
 	r, err := app.dataService.CreateBar(ctx, &postgres.CreateBarRequest{
-		Id:          id,
-		Title:       title,
-		Address:     address,
-		Description: description,
+		Title:       body.Title,
+		Address:     body.Address,
+		Description: body.Description,
 		Drinks:      []*postgres.CreateDrinkRequest{},
 	})
 
@@ -70,7 +76,7 @@ func InitDataServiceGrpcConnection(app *appConfig) postgres.BarMapServiceClient 
 	return postgres.NewBarMapServiceClient(conn)
 }
 
-	var config Config
+func Start(confFileName string) {
 
 	var app appConfig
 	utils.ParseJsonConfig(confFileName, &app)
