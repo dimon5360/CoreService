@@ -1,9 +1,8 @@
-package server
+package router
 
 import (
 	"app/main/kafka"
 	"app/main/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,12 +23,9 @@ type Drink struct {
 	// Ingredient  []Ingredient `json:"ingredient"`
 }
 
-// **************** API:
-// GET /drinks
-// GET /drinks/<id>
-// POST /drinks
-// DELETE /drinks/<id>
-// UPDATE /drinks/<id>
+type Router struct {
+	kafka *kafka.Handler
+}
 
 var drinks = []Drink{
 	{Id: 1, Title: "Drink1", Price: 5699, Description: "Alcohol drink 1", Type: 1},
@@ -38,33 +34,34 @@ var drinks = []Drink{
 }
 
 func GetDrinks(ctx *gin.Context) {
-
 	ctx.IndentedJSON(http.StatusOK, drinks)
 }
 
-type ServerConfig struct {
-	Host string `json:"host"`
-	Port uint16 `json:"port"`
+// **************** API:
+// GET /drinks
+// GET /drinks/<id>
+// POST /drinks
+// DELETE /drinks/<id>
+// UPDATE /drinks/<id>
 
-	kafkaHandler *kafka.Handler
-}
-
-func SetupRouting(router *gin.Engine) {
+func SetupRouting(router *gin.Engine, kafka *kafka.Handler) {
 	router.GET("/drinks", GetDrinks)
 	// todo
 }
 
-func Start(confFileName string) {
+type Config struct {
+	Host string `json:"host"`
+	Port uint16 `json:"port"`
+}
 
-	var config ServerConfig
+func Init(confFileName string, kafka *kafka.Handler) (*gin.Engine, *Config) {
+
+	var config Config
+
 	utils.ParseJsonConfig(confFileName, &config)
 
 	router := gin.Default()
-	SetupRouting(router)
-	go func() { router.Run(fmt.Sprintf("%s:%d", config.Host, config.Port)) }()
+	SetupRouting(router, kafka)
 
-	config.kafkaHandler = kafka.InitKafkaHandler("config/kafka.json")
-
-	config.kafkaHandler.StartKafkaHandler()
-
+	return router, &config
 }

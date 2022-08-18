@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/gin-gonic/gin"
 )
 
 type KafkaConfig struct {
@@ -23,9 +24,10 @@ type Handler struct {
 	consumer *kafka.Consumer
 
 	config *KafkaConfig
+	router *gin.Engine
 }
 
-func InitKafkaHandler(jsonFileName string) *Handler {
+func Init(jsonFileName string) *Handler {
 
 	var handler Handler
 	utils.ParseJsonConfig(jsonFileName, &handler.config)
@@ -50,11 +52,12 @@ func InitKafkaHandler(jsonFileName string) *Handler {
 	}
 
 	handler.producer = producer
-
 	return &handler
 }
 
-func (h *Handler) StartKafkaHandler() {
+func (h *Handler) Start(router *gin.Engine) {
+
+	h.router = router
 
 	go h.KafkaConsumer()
 	h.KafkaProducer()
@@ -99,11 +102,16 @@ func (h *Handler) KafkaProducer() {
 
 	topic := h.config.ProducerTopic
 	for {
+		// todo: pull from queue
 		msg, _ := reader.ReadString('\n')
-		// log.Printf("Produce message: %s", msg)
 		h.producer.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 			Value:          []byte(msg),
 		}, nil)
 	}
+}
+
+func (h *Handler) Produce(json string) {
+
+	// todo: push message in queue
 }
