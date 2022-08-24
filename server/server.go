@@ -32,7 +32,11 @@ type Body struct {
 
 func SetupRouting(router *gin.Engine, app *appConfig) {
 
+	// POST requests
 	router.POST("/createbar", app.CreateBar)
+
+	// GET requests
+	router.GET("/bar/:id", app.GetBar)
 }
 
 func (app *appConfig) CreateBar(c *gin.Context) {
@@ -63,7 +67,45 @@ func (app *appConfig) CreateBar(c *gin.Context) {
 		log.Fatalf("could not create bar: %v", err)
 		c.String(http.StatusInternalServerError, "Creating bar failed")
 	}
+
+	// TODO: serialize to JSON
 	c.String(http.StatusCreated, r.String())
+}
+
+func (app *appConfig) GetBar(c *gin.Context) {
+	type getBarRequest struct {
+		ID string `uri:"id" binding:"required,min=1"`
+	}
+
+	var req getBarRequest
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+	// log.Printf("Got request for bar with ID = %s\n", req.ID)
+	// c.String(http.StatusOK, req.ID)
+
+	// if err := c.BindJSON(&req); err != nil {
+	// 	c.AbortWithError(http.StatusBadRequest, err)
+	// 	return
+	// }
+
+	log.Printf("Got request for bar with ID = %s\n", req.ID)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	r, err := app.dataService.GetBar(ctx, &postgres.GetBarRequest{
+		Id: req.ID,
+	})
+
+	if err != nil {
+		log.Fatalf("could not create bar: %v", err)
+		c.String(http.StatusInternalServerError, "Creating bar failed")
+	}
+
+	// TODO: serialize to JSON
+	c.String(http.StatusOK, r.String())
 }
 
 func InitDataServiceGrpcConnection(app *appConfig) postgres.BarMapServiceClient {
