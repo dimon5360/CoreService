@@ -31,7 +31,6 @@ func (app *AppConfig) CreateBar(c *gin.Context) {
 		Title:       body.Title,
 		Address:     body.Address,
 		Description: body.Description,
-		Drinks:      []*postgres.CreateDrinkRequest{},
 	})
 
 	if err != nil {
