@@ -16,6 +16,8 @@ type BarBody struct {
 	Description string
 }
 
+/// create gRPC create bar request from HTTP request body
+/// established, remove comment later
 func (app *AppConfig) CreateBar(c *gin.Context) {
 
 	body := BarBody{}
@@ -42,6 +44,8 @@ func (app *AppConfig) CreateBar(c *gin.Context) {
 	c.String(http.StatusCreated, r.String())
 }
 
+/// create gRPC update bar request from HTTP request body
+/// established, remove comment later
 func (app *AppConfig) UpdateBar(c *gin.Context) {
 
 	type updateBarRequest struct {
@@ -54,8 +58,6 @@ func (app *AppConfig) UpdateBar(c *gin.Context) {
 		return
 	}
 
-	log.Printf("Got request for bar with ID = %s\n", req.ID)
-
 	body := BarBody{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
@@ -65,7 +67,8 @@ func (app *AppConfig) UpdateBar(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := app.dataService.CreateBar(ctx, &postgres.CreateBarRequest{
+	r, err := app.dataService.UpdateBar(ctx, &postgres.UpdateBarRequest{
+		Id:          req.ID,
 		Title:       body.Title,
 		Address:     body.Address,
 		Description: body.Description,
@@ -80,6 +83,37 @@ func (app *AppConfig) UpdateBar(c *gin.Context) {
 	c.String(http.StatusCreated, r.String())
 }
 
+/// create gRPC delete bar request from HTTP request body
+/// established, remove comment later
+func (app *AppConfig) DeleteBar(c *gin.Context) {
+	type deleteBarRequest struct {
+		ID string `uri:"id" binding:"required,min=1"`
+	}
+
+	var req deleteBarRequest
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	r, err := app.dataService.DeleteBar(ctx, &postgres.DeleteBarRequest{
+		Id: req.ID,
+	})
+
+	if err != nil {
+		log.Fatalf("could not create bar: %v", err)
+		c.String(http.StatusInternalServerError, "Creating bar failed")
+	}
+
+	// TODO: serialize to JSON
+	c.String(http.StatusCreated, r.String())
+}
+
+/// create gRPC get bar request from HTTP request body
+/// established, remove comment later
 func (app *AppConfig) GetBar(c *gin.Context) {
 
 	type getBarRequest struct {
