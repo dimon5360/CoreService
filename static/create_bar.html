@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post JSON to Server</title>
+    <script>
+        function send() {
+            var title = document.getElementById("Title").value;
+            var address = document.getElementById("Address").value;
+            var description = document.getElementById("Description").value;
+            var result = document.getElementById("result");
+
+            const xhr = new XMLHttpRequest();
+
+            const json = {
+                title: title,
+                address: address,
+                description: description,
+            };
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log("got response")
+                    return this.responseText;
+                }
+            });
+
+            // open request
+            xhr.open("POST", "/createbar");
+
+            xhr.setRequestHeader("Content-Type",
+                                 "application/json");
+
+            xhr.send(JSON.stringify(json));
+        }
+    </script>
+</head>
+
+<body>
+  <label for="Title">Bar title</label>
+  <input type="text" id="Title" value="Goodson" />
+  <label for="Address">Bar address</label>
+  <input type="text" id="Address" value="Zelenograd" />
+  <label for="Description">Bar description</label>
+  <input type="text" id="Description" value="Just a bar" />
+  <button type="submit" onclick="send()">Create bar</button>
+</body>
+</html>

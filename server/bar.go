@@ -16,8 +16,16 @@ type BarBody struct {
 	Description string
 }
 
-/// create gRPC create bar request from HTTP request body
-/// established, remove comment later
+// GET request - form to create POST request for new bar
+func (app *AppConfig) CreateBarForm(c *gin.Context) {
+
+	c.HTML(http.StatusOK, "create_bar.html", gin.H{
+		"content": "This is an index page...",
+	})
+}
+
+// / create gRPC create bar request from HTTP request body
+// / established, remove comment later
 func (app *AppConfig) CreateBar(c *gin.Context) {
 
 	body := BarBody{}
@@ -40,12 +48,26 @@ func (app *AppConfig) CreateBar(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "Creating bar failed")
 	}
 
-	// TODO: serialize to JSON
-	c.String(http.StatusCreated, r.String())
+	type BarResponse struct {
+		Id          string
+		Title       string
+		Address     string
+		Description string
+	}
+
+	resp := make([]BarResponse, 0)
+	resp = append(resp, BarResponse{
+		Id:          r.Id,
+		Title:       r.Title,
+		Address:     r.Address,
+		Description: r.Description,
+	})
+
+	c.JSON(http.StatusCreated, resp)
 }
 
-/// create gRPC update bar request from HTTP request body
-/// established, remove comment later
+// / create gRPC update bar request from HTTP request body
+// / established, remove comment later
 func (app *AppConfig) UpdateBar(c *gin.Context) {
 
 	type updateBarRequest struct {
@@ -83,8 +105,8 @@ func (app *AppConfig) UpdateBar(c *gin.Context) {
 	c.String(http.StatusCreated, r.String())
 }
 
-/// create gRPC delete bar request from HTTP request body
-/// established, remove comment later
+// / create gRPC delete bar request from HTTP request body
+// / established, remove comment later
 func (app *AppConfig) DeleteBar(c *gin.Context) {
 	type deleteBarRequest struct {
 		ID string `uri:"id" binding:"required,min=1"`
@@ -112,8 +134,8 @@ func (app *AppConfig) DeleteBar(c *gin.Context) {
 	c.String(http.StatusCreated, r.String())
 }
 
-/// create gRPC get bar request from HTTP request body
-/// established, remove comment later
+// / create gRPC get bar request from HTTP request body
+// / established, remove comment later
 func (app *AppConfig) GetBar(c *gin.Context) {
 
 	type getBarRequest struct {

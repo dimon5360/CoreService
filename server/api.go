@@ -5,6 +5,7 @@ import (
 )
 
 func setupBarsRouting(router *gin.Engine, app *AppConfig) {
+	router.GET("/createbar", app.CreateBarForm)
 	router.POST("/createbar", app.CreateBar)
 	router.PUT("/updatebar/:id", app.UpdateBar)
 	router.DELETE("/deletebar/:id", app.DeleteBar)

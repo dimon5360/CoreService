@@ -37,6 +37,9 @@ func Start(confFileName string) {
 	utils.ParseJsonConfig(confFileName, &app)
 
 	router := gin.Default()
+	// router.Static("/static", "./static")
+	router.SetTrustedProxies([]string{"localhost"})
+	router.LoadHTMLGlob("static/*.html")
 
 	app.dataService = InitDataServiceGrpcConnection(&app)
 
