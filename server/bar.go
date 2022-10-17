@@ -17,7 +17,7 @@ type BarBody struct {
 }
 
 // GET request - form to create POST request for new bar
-func (app *AppConfig) CreateBarForm(c *gin.Context) {
+func (app *AppCore) CreateBarForm(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "create_bar.html", gin.H{
 		"content": "This is an index page...",
@@ -26,7 +26,7 @@ func (app *AppConfig) CreateBarForm(c *gin.Context) {
 
 // / create gRPC create bar request from HTTP request body
 // / established, remove comment later
-func (app *AppConfig) CreateBar(c *gin.Context) {
+func (app *AppCore) CreateBar(c *gin.Context) {
 
 	body := BarBody{}
 	if err := c.BindJSON(&body); err != nil {
@@ -66,9 +66,9 @@ func (app *AppConfig) CreateBar(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
-// / create gRPC update bar request from HTTP request body
-// / established, remove comment later
-func (app *AppConfig) UpdateBar(c *gin.Context) {
+// create gRPC update bar request from HTTP request body
+// established, remove comment later
+func (app *AppCore) UpdateBar(c *gin.Context) {
 
 	type updateBarRequest struct {
 		ID string `uri:"id" binding:"required,min=1"`
@@ -105,9 +105,9 @@ func (app *AppConfig) UpdateBar(c *gin.Context) {
 	c.String(http.StatusCreated, r.String())
 }
 
-// / create gRPC delete bar request from HTTP request body
-// / established, remove comment later
-func (app *AppConfig) DeleteBar(c *gin.Context) {
+// create gRPC delete bar request from HTTP request body
+// established, remove comment later
+func (app *AppCore) DeleteBar(c *gin.Context) {
 	type deleteBarRequest struct {
 		ID string `uri:"id" binding:"required,min=1"`
 	}
@@ -134,9 +134,9 @@ func (app *AppConfig) DeleteBar(c *gin.Context) {
 	c.String(http.StatusCreated, r.String())
 }
 
-// / create gRPC get bar request from HTTP request body
-// / established, remove comment later
-func (app *AppConfig) GetBar(c *gin.Context) {
+// create gRPC get bar request from HTTP request body
+// established, remove comment later
+func (app *AppCore) GetBar(c *gin.Context) {
 
 	type getBarRequest struct {
 		ID string `uri:"id" binding:"required,min=1"`

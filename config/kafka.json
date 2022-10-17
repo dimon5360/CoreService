@@ -1,6 +1,5 @@
 {
     "host": "localhost",
-    "producerTopic": "DrinkMapRequestsTopic",
-    "consumerTopic": "DrinkMapResponsesTopic",
-    "group.id": "DrinkMapGroup"
+    "producerTopic": "LoggingTopic",
+    "group.id": "LoggingWeserverGroup"
 }

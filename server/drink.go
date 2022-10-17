@@ -20,9 +20,9 @@ type DrinkBody struct {
 	Ingredients []IngredientBody
 }
 
-/// create gRPC create drink request from HTTP request body
-/// established, remove comment later
-func (app *AppConfig) CreateDrink(c *gin.Context) {
+// / create gRPC create drink request from HTTP request body
+// / established, remove comment later
+func (app *AppCore) CreateDrink(c *gin.Context) {
 
 	body := DrinkBody{}
 	if err := c.BindJSON(&body); err != nil {
@@ -61,9 +61,9 @@ func (app *AppConfig) CreateDrink(c *gin.Context) {
 	c.String(http.StatusCreated, r.String())
 }
 
-/// create gRPC update drink request from HTTP request body
-/// established, remove comment later
-func (app *AppConfig) UpdateDrink(c *gin.Context) {
+// / create gRPC update drink request from HTTP request body
+// / established, remove comment later
+func (app *AppCore) UpdateDrink(c *gin.Context) {
 
 	type Req struct {
 		ID string `uri:"id" binding:"required,min=1"`
@@ -103,9 +103,9 @@ func (app *AppConfig) UpdateDrink(c *gin.Context) {
 	c.String(http.StatusOK, r.String())
 }
 
-/// create gRPC delete drink request from HTTP request body
-/// established, remove comment later
-func (app *AppConfig) DeleteDrink(c *gin.Context) {
+// / create gRPC delete drink request from HTTP request body
+// / established, remove comment later
+func (app *AppCore) DeleteDrink(c *gin.Context) {
 
 	type Req struct {
 		ID string `uri:"id" binding:"required,min=1"`
@@ -135,9 +135,9 @@ func (app *AppConfig) DeleteDrink(c *gin.Context) {
 	c.String(http.StatusOK, r.String())
 }
 
-/// create gRPC get drink request from HTTP request body
-/// established, remove comment later
-func (app *AppConfig) GetDrink(c *gin.Context) {
+// / create gRPC get drink request from HTTP request body
+// / established, remove comment later
+func (app *AppCore) GetDrink(c *gin.Context) {
 
 	type getBarRequest struct {
 		ID string `uri:"id" binding:"required,min=1"`

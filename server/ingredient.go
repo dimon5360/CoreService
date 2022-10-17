@@ -13,23 +13,23 @@ type IngredientBody struct {
 	DrinkId int32
 }
 
-/// create gRPC create ingredient request from HTTP request body
+// / create gRPC create ingredient request from HTTP request body
 // #TODO: need to implement script
-func (app *AppConfig) CreateIngredient(c *gin.Context) {
+func (app *AppCore) CreateIngredient(c *gin.Context) {
 
 	c.String(http.StatusOK, "")
 }
 
-/// create gRPC update ingredient request from HTTP request body
+// / create gRPC update ingredient request from HTTP request body
 // #TODO: need to implement script
-func (app *AppConfig) UpdateIngredient(c *gin.Context) {
+func (app *AppCore) UpdateIngredient(c *gin.Context) {
 
 	c.String(http.StatusOK, "")
 }
 
-/// create gRPC delete ingredient request from HTTP request body
+// / create gRPC delete ingredient request from HTTP request body
 // #TODO: need to implement script
-func (app *AppConfig) DeleteIngredient(c *gin.Context) {
+func (app *AppCore) DeleteIngredient(c *gin.Context) {
 
 	c.String(http.StatusOK, "")
 }
