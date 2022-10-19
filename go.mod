@@ -3,6 +3,7 @@ module app/main
 go 1.18
 
 require (
+	github.com/confluentinc/confluent-kafka-go v1.9.2
 	github.com/gin-gonic/gin v1.8.1
 	github.com/golang/protobuf v1.5.2
 	google.golang.org/grpc v1.50.0

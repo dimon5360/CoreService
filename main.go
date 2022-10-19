@@ -1,7 +1,6 @@
 package main
 
 import (
-	"app/main/logger"
 	"app/main/server"
 	"log"
 )
@@ -17,5 +16,5 @@ func main() {
 
 	log.Printf("Start Web server service v.%d.%d.%d.", MAJOR, MINOR, BUILD)
 
-	server.Start("config/server.json", logger.Init("config/kafka.json"))
+	server.Start("config/server.json", "config/kafka.json")
 }

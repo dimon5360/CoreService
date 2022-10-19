@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +29,9 @@ func setupIngredientsRouting(router *gin.Engine, app *AppCore) {
 
 func SetupRouting(router *gin.Engine, app *AppCore) {
 	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "test request")
+		var testText = "test request"
+		app.Logger.Write(fmt.Sprintf("test log record: %s", testText))
+		c.String(http.StatusOK, testText)
 	})
 
 	setupBarsRouting(router, app)
