@@ -35,11 +35,11 @@ func (app *AppCore) InitDataServiceGrpcConnection() {
 	app.dataService = postgres.NewBarMapServiceClient(conn)
 }
 
-func Start(configPath string, logger *logger.LoggerCore) {
+func Start(configPath string, loggerConfigPath string) {
 
 	var app AppCore
 	utils.ParseJsonConfig(configPath, &app)
-	app.Logger = logger
+	app.Logger = logger.Init(loggerConfigPath)
 
 	app.InitDataServiceGrpcConnection()
 	app.InitRouter()
