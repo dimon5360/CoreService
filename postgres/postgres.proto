@@ -30,7 +30,8 @@ service BarMapService {
 
 enum DrinkType {
     UNDEFINED_DRINK_TYPE = 0;
-    // TODO:
+    LONG_DRINK_TYPE = 1;
+    SHOT_DRINK_TYPE = 2;
 }
 
 message CreateBarRequest {

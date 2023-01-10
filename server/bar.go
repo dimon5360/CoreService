@@ -24,8 +24,8 @@ func (app *AppCore) CreateBarForm(c *gin.Context) {
 	})
 }
 
-// / create gRPC create bar request from HTTP request body
-// / established, remove comment later
+// create bar POST request
+// established, remove comment later
 func (app *AppCore) CreateBar(c *gin.Context) {
 
 	body := BarBody{}

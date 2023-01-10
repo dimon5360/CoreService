@@ -16,6 +16,7 @@ func setupBarsRouting(router *gin.Engine, app *AppCore) {
 }
 
 func setupDrinksRouting(router *gin.Engine, app *AppCore) {
+	router.GET("/createdrink", app.CreateDrinkForm)
 	router.POST("/createdrink", app.CreateDrink)
 	router.PUT("/updatedrink/:id", app.UpdateDrink)
 	router.DELETE("/deletedrink/:id", app.DeleteDrink)

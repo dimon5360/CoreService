@@ -3,7 +3,9 @@ package server
 import (
 	"app/main/postgres"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -14,18 +16,27 @@ import (
 type DrinkBody struct {
 	Title       string
 	Price       string
-	DrinkType   int32
+	DrinkType   uint32
 	Description string
-	BarId       int32
+	BarId       string
 	Ingredients []IngredientBody
 }
 
-// / create gRPC create drink request from HTTP request body
-// / established, remove comment later
+// GET request - form to create POST request for new bar
+func (app *AppCore) CreateDrinkForm(c *gin.Context) {
+
+	c.HTML(http.StatusOK, "create_drink.html", gin.H{
+		"content": "This is an index page...",
+	})
+}
+
+// gRPC request to create drink from HTTP request body
 func (app *AppCore) CreateDrink(c *gin.Context) {
 
 	body := DrinkBody{}
-	if err := c.BindJSON(&body); err != nil {
+
+	b, _ := io.ReadAll(c.Request.Body)
+	if err := json.Unmarshal(b, &body); err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
@@ -35,7 +46,7 @@ func (app *AppCore) CreateDrink(c *gin.Context) {
 		Price:       body.Price,
 		DrinkType:   postgres.DrinkType(body.DrinkType),
 		Description: body.Description,
-		BarId:       fmt.Sprintf("%d", body.BarId),
+		BarId:       body.BarId,
 		Ingredients: []*postgres.CreateIngredientRequest{},
 	}
 

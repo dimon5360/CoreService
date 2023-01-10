@@ -7,10 +7,8 @@ import (
 )
 
 type IngredientBody struct {
-	Id      int32
-	Title   string
-	Amount  int32
-	DrinkId int32
+	Title  string
+	Amount uint32
 }
 
 // / create gRPC create ingredient request from HTTP request body

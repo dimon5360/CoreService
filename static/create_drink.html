@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post JSON to Server</title>
+    <script>
+        function send() {
+            var result = document.getElementById("result");
+
+            const xhr = new XMLHttpRequest();
+
+            const test_ingredient = {
+                title: document.getElementById("IngredientTitle").value,
+                amount: 1,
+            };
+
+            const json = {
+                title: document.getElementById("Title").value,
+                price: document.getElementById("Price").value,
+                drinktype: Number(document.getElementById("DrinkType").value),
+                description: document.getElementById("Description").value,
+                barId: document.getElementById("BarId").value,
+                ingredients: [test_ingredient],
+            };
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log("got response")
+                    return this.responseText;
+                }
+            });
+
+            // open request
+            xhr.open("POST", "/createdrink");
+
+            xhr.setRequestHeader("Content-Type",
+                                 "application/json");
+
+            xhr.send(JSON.stringify(json));
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <label for="Title">Drink title</label>
+        <input type="text" id="Title" value="Drink1" />
+    </div>
+    <div>
+        <label for="Price">Drink price</label>
+        <input type="text" id="Price" value="100" />
+    </div>
+    <div>
+        <label for="DrinkType">Drink type</label>
+        <input type="text" id="DrinkType" value="1" />
+    </div>
+    <div>
+        <label for="Description">Drink description</label>
+        <input type="text" id="Description" value="Just a drink" />
+    </div>
+    <div>
+        <label for="BarId">Bar id</label>
+        <input type="text" id="BarId" value="1" />
+    </div>
+    <div>
+        <label for="IngredientTitle">Ingredient title</label>
+        <input type="text" id="IngredientTitle" value="Ingredient1" />
+    </div>
+    <div>
+        <button type="submit" onclick="send()">Create drink</button>
+    </div>
+</body>
+</html>
