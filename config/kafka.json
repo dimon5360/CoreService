@@ -1,5 +1,5 @@
 {
-    "host": "localhost",
-    "producerTopic": "LoggingTopic",
-    "group.id": "LoggingWeserverGroup"
+    "host": "localhost:29092",
+    "producerTopic": "BarMapRoutingTopic",
+    "groupid": "BarMapGroup"
 }

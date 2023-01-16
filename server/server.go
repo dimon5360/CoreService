@@ -44,5 +44,8 @@ func Start(configPath string, loggerConfigPath string) {
 	app.InitDataServiceGrpcConnection()
 	app.InitRouter()
 
-	app.Router.Run(fmt.Sprintf("%s:%d", app.Host, app.Port))
+	url := fmt.Sprintf("%s:%d", app.Host, app.Port)
+	app.Logger.Write(fmt.Sprintf("Start listening %s", url))
+
+	app.Router.Run(url)
 }

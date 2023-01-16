@@ -22,7 +22,6 @@ type DrinkBody struct {
 	Ingredients []IngredientBody
 }
 
-// GET request - form to create POST request for new bar
 func (app *AppCore) CreateDrinkForm(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "create_drink.html", gin.H{
@@ -30,7 +29,6 @@ func (app *AppCore) CreateDrinkForm(c *gin.Context) {
 	})
 }
 
-// gRPC request to create drink from HTTP request body
 func (app *AppCore) CreateDrink(c *gin.Context) {
 
 	body := DrinkBody{}

@@ -10,7 +10,7 @@ import (
 type KafkaConfig struct {
 	Host          string `json:"host"`
 	ProducerTopic string `json:"producerTopic"`
-	GroupId       string `json:"group.id"`
+	GroupId       string `json:"groupid"`
 }
 
 type Handler struct {
