@@ -14,7 +14,7 @@ const (
 
 func main() {
 
-	log.Printf("Barmap routing service v.%d.%d.%d.", MAJOR, MINOR, BUILD)
+	log.Printf("Core service v.%d.%d.%d.", MAJOR, MINOR, BUILD)
 
 	server.Start("config/server.json", "config/kafka.json")
 }

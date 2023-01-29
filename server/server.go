@@ -14,10 +14,8 @@ import (
 
 type AppCore struct {
 	Host string `json:"host"`
-	Port uint16 `json:"port"`
 
-	DataServiceHost string `json:"data_access_service_host"`
-	DataServicePort uint16 `json:"data_access_service_port"`
+	StorageServiceHost string `json:"storage_service_host"`
 
 	Logger *logger.LoggerCore
 	Router *gin.Engine
@@ -25,9 +23,9 @@ type AppCore struct {
 	dataService postgres.BarMapServiceClient
 }
 
-func (app *AppCore) InitDataServiceGrpcConnection() {
+func (app *AppCore) InitStorageServiceGrpcConnection() {
 
-	conn, err := grpc.Dial(fmt.Sprintf("%s:%d", app.DataServiceHost, app.DataServicePort),
+	conn, err := grpc.Dial(app.StorageServiceHost,
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -41,11 +39,10 @@ func Start(configPath string, loggerConfigPath string) {
 	utils.ParseJsonConfig(configPath, &app)
 	app.Logger = logger.Init(loggerConfigPath)
 
-	app.InitDataServiceGrpcConnection()
+	app.InitStorageServiceGrpcConnection()
 	app.InitRouter()
 
-	url := fmt.Sprintf("%s:%d", app.Host, app.Port)
-	app.Logger.Write(fmt.Sprintf("Start listening %s", url))
+	app.Logger.Write(fmt.Sprintf("Start listening %s", app.Host))
 
-	app.Router.Run(url)
+	app.Router.Run(app.Host)
 }

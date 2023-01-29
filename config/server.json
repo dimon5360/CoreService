@@ -1,7 +1,4 @@
 {
-    "host": "localhost",
-    "port": 40400,
-	
-    "data_access_service_host": "localhost",
-    "data_access_service_port": 40401
+    "host": "localhost:40400",
+    "storage_service_host": "localhost:40401"
 }
